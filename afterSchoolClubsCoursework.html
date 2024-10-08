@@ -18,6 +18,18 @@
             <button @click="showCheckout = true" v-if="cart.length > 0">Go to Checkout</button>
         </div>
 
+        <!--Sorting Options-->
+        <div class="sort-options">
+            <label for="sortBy">Sort By:</label>
+            <select v-model="sortBy" @change="sortLessons">
+                <option value="subject">Subject</option>
+                <option value="location">Location</option>
+                <option value="price">Price</option>
+                <option value="availability">Spaces</option>
+            </select>
+            <button @click="toggleSortOrder">{{ sortOrderLabel }}</button>
+        </div>
+
         <!-- Product List (shown when not in checkout)-->
         <div v-if="!showCheckout" class="lesson-list">
             <!-- Loop through each lesson -->
@@ -159,19 +171,63 @@
                         imageAlt: 'Drama lesson image',
                         availability: 5
                     }
-                ]
+                ],
+                sortBy: 'subject', //Default sort attribute
+                sortOrder: 'asc', //Default sort order (ascending)
             },
             methods: {
                 addToCart(lesson) {
                     if (lesson.availability > 0) {
                         this.cart.push(lesson);
                         lesson.availability--; //Reduce availability by 1
-                    }
+                    
                 }
             },
+            sortLessons() {
+                //Method will be triggered when the sorting option is changed
+                this.lessons.sort((a,b) => {
+                    let attributeA = a[this.sortBy];
+                    let attributeB = b[this.sortBy];
+                    if (this.sortOrder === 'asc') {
+                        return attributeA > attributeB ? 1 : attributeA < attributeB ? -1 : 0;
+                    } else {
+                        return attributeA < attributeB ? 1 : attributeA > attributeB ? -1 : 0;
+                    }
+                });
+            },
+            toggleSortOrder() {
+                //Toggle between ascending and descending
+                this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+                this.sortLessons(); //Re-sort after changing the order
+            }
+        },
             computed: {
+                sortedLessons() {
+                    // Returns the sorted lessons array
+                    return [...this.lessons].sort((a, b) => {
+                        let attributeA = a[this.sortBy];
+                        let attributeB = b[this.sortBy];
+                        if (this.sortOrder === 'asc') {
+                            return attributeA > attributeB ? 1 : attributeA < attributeB ? -1 : 0;
+                        } else {
+                            return attributeA < attributeB ? 1 : attributeA > attributeB ? -1 : 0;
+                        }
+                    });
+                },
                 cartTotal() {
                     return this.cart.reduce((total, item) => total + item.price, 0);
+                },
+                sortOrderLabel() {
+                    return this.sortOrder === 'asc' ? 'Ascending' : 'Descending';
+                }
+            },
+            watch: {
+                //Watch for changes in sortBy or sortOrder and trigger sorting
+                sortBy() {
+                    this.sortLessons();
+                },
+                sortOrder(){
+                    this.sortLessons();
                 }
             }
         });
