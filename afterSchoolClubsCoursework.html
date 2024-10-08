@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Lesson Information</title>
+
+    <!-- Page Heading -->
+    <h1>After School Classes</h1>
+
+    <div id="app">
+        <!-- Cart display -->
+        <div class="cart">
+            <h2>Cart</h2>
+            <p>Items in cart: {{ cart.length }}</p>
+            <button @click="showCheckout = true" v-if="cart.length > 0">Go to Checkout</button>
+        </div>
+
+        <!-- Product List (shown when not in checkout)-->
+        <div v-if="!showCheckout" class="lesson-list">
+            <!-- Loop through each lesson -->
+             <div v-for="lesson in lessons" :key="lesson.id" class="lesson-container"> <!--v-for used for the display of the lesson list-->
+            <!-- Lesson Container -->
+            <div class="lesson-container">
+                <!-- Image -->
+                <img :src="lesson.imagePath" :alt="lesson.imageAlt" class="lesson-image">
+                <!-- Subject -->
+                <div class="lesson-info">
+                    <strong>Subject:</strong> {{ lesson.subject }}
+                </div>
+                <!-- Location -->
+                <div class="lesson-info">
+                    <strong>Location:</strong> {{ lesson.location }}
+                </div>
+                <!-- Price -->
+                <div class="lesson-info lesson-price">
+                    <strong>Price:</strong> £{{ lesson.price }}
+                </div>
+                <!-- Add to Cart Button-->
+                <button @click="addToCart(lesson)" :disabled="lesson.availability === 0" class="addToCartBtn"> Add To
+                    Cart</button>
+                <!-- Availability-->
+                <div class="lesson-availabilty">
+                    <strong>Available:</strong> {{ lesson.availability }}
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Checkout Area (Shown when in checkout)-->
+        <div v-if="showCheckout" class="checkout">
+            <h2>Checkout</h2>
+            <ul>
+                <li v-for="item in cart" :key="item.id">{{ item.subject }} - £{{ item.price }}</li>
+            </ul>
+            <p>Total: £{{ cartTotal }}</p>
+            <button @click="showCheckout = false">Continue Shopping</button>
+        </div>
+    </div>
+
+    <!-- Vue.js -->
+    <script src="https://unpkg.com/vue@2.6.14"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                showCheckout: false,
+                cart: [],
+                lessons: [
+                    {
+                        id: 1,
+                        subject: 'Mathematics',
+                        location: 'Hendon',
+                        price: 40,
+                        imagePath: 'https://images.unsplash.com/photo-1596495577886-d920f1fb7238?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                        imageAlt: 'Math lesson image',
+                        availability: 5
+                    },
+                    {
+                        id: 2,
+                        subject: 'English',
+                        location: 'Bromley',
+                        price: 40,
+                        imagePath: 'https://www.uab.edu/news/media/k2/items/cache/391158b180eef594213594ab063bcbbb_XL.jpg',
+                        imageAlt: 'English lesson image',
+                        availability: 5
+                    },
+                    {
+                        id: 3,
+                        subject: 'Science',
+                        location: 'Dagenham',
+                        price: 40,
+                        imagePath: 'https://www.nyas.org/wp-content/uploads/2024/02/AdobeStock_194483477-scaled.jpeg',
+                        imageAlt: 'Science lesson image',
+                        availability: 5
+                    },
+                    {
+                        id: 4,
+                        subject: 'Geography',
+                        location: 'Oxford',
+                        price: 25,
+                        imagePath: 'https://geographical.co.uk/wp-content/uploads/physical-geography-title.jpg',
+                        imageAlt: 'Geography lesson image',
+                        availability: 5
+                    },
+                    {
+                        id: 5,
+                        subject: 'History',
+                        location: 'Balham',
+                        price: 25,
+                        imagePath:'https://dualcreditathome.com/wp-content/uploads/2014/02/history.jpg',
+                        imageAlt: 'History lesson image',
+                        availability: 5
+                    },
+                    {
+                        id: 6,
+                        subject: 'Religious Studies',
+                        location: 'Catford',
+                        price: 25,
+                        imagePath:'https://newseumed.org/sites/default/files/styles/200x200/public/2020-11/thumb-LP-C2C-methods-of-religious-studies.jpg?itok=lmL6jIiF',
+                        imageAlt: 'Religious Studies lesson image',
+                        availability: 5
+                    },
+                    {
+                        id: 7,
+                        subject: 'Art',
+                        location: 'Putney',
+                        price: 20,
+                        imagePath:'https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-course-photos.s3.amazonaws.com/65/78ce0081ad11e681d7bb31b0a632ef/starry-night.jpg',
+                        imageAlt: 'Art lesson image',
+                        availability: 5
+                    },
+                    {
+                        id: 8,
+                        subject: 'Computer Science',
+                        location: 'Brixton',
+                        price: 35,
+                        imagePath: 'https://www.gettingsmart.com/wp-content/uploads/2017/07/Coding-Computer-Science.jpg',
+                        imageAlt: 'Computer Science lesson image',
+                        availability: 5
+                    },
+                    {
+                        id: 9,
+                        subject: 'Dance',
+                        location: 'Stratford',
+                        price: 30,
+                        imagePath: 'https://www.shutterstock.com/blog/wp-content/uploads/sites/5/2021/04/Dance-Cover.jpg',
+                        imageAlt: 'Dance lesson image',
+                        availability: 5
+                    },
+                    {
+                        id: 10,
+                        subject: 'Drama',
+                        location: 'Romford',
+                        price: 30,
+                        imagePath: 'https://www.teachwire.net/wp-content/uploads/2019/04/Drama-games.jpg',
+                        imageAlt: 'Drama lesson image',
+                        availability: 5
+                    }
+                ]
+            },
+            methods: {
+                addToCart(lesson) {
+                    if (lesson.availability > 0) {
+                        this.cart.push(lesson);
+                        lesson.availability--; //Reduce availability by 1
+                    }
+                }
+            },
+            computed: {
+                cartTotal() {
+                    return this.cart.reduce((total, item) => total + item.price, 0);
+                }
+            }
+        });
+    </script>
+
+    </body>
+
+</html>
