@@ -8,6 +8,50 @@ body {
     background-position: center; 
     background-repeat: no-repeat; 
 }
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 10px;
+}
+
+.navbar .cart-toggle button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.navbar .cart-toggle button:disabled {
+    background-color: #888;
+    cursor: not-allowed;
+}
+
+.navbar .sort-options {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .sort-options label {
+    color: white;
+    margin-right: 10px;
+}
+
+.navbar .sort-options select,
+.navbar .sort-options button {
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.navbar .sort-options button {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
 
 /* Style the lesson container */
 .lesson-container {
@@ -54,13 +98,47 @@ h1 {
     margin-top: 20px;
     color: #333;
 }
-/* Basic button styling */
+
+/* General button styles for all buttons */
 button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding around the text */
+    margin: 10px 5px; /* Space around the button */
+    border: none; /* Remove borders */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Larger font size */
+    transition: background-color 0.3s ease; /* Smooth background color change */
+}
+
+/* Hover effect for all buttons */
+button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Disabled button style */
+button:disabled {
+    background-color: #ccc; /* Grey background when disabled */
+    cursor: not-allowed; /* Not-allowed cursor */
+}
+
+/* Specific button style for 'Go to Checkout' and 'Continue Shopping' */
+.cart-toggle button {
+    background-color: #f39c12; /* Orange background */
+}
+
+.cart-toggle button:hover {
+    background-color: #e67e22; /* Darker orange on hover */
+}
+
+/* Specific button style for 'Ascending/Descending' */
+.sort-options button {
+    background-color: #3498db; /* Blue background */
+}
+
+.sort-options button:hover {
+    background-color: #2980b9; /* Darker blue on hover */
 }
 
 /* Add to Cart Button */
@@ -141,4 +219,64 @@ button {
 .lesson-image {
     width: 100%; /* Make sure the image fits the container */
     height: auto;
+}
+
+.checkout {
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack items vertically */
+    margin: 20px;
+}
+
+.checkout-content {
+    display: flex; /* Use flexbox for the content layout */
+    margin-top: 10px;
+}
+
+.checkout-list {
+    flex: 1; /* Allow the list to take available space */
+    margin-right: 20px; /* Space between the list and total */
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.checkout-item {
+    display: flex; /* Use flexbox for alignment */
+    align-items: right; /* Vertically center the items */
+    margin-bottom: 10px; /* Spacing between items */
+}
+
+.checkout-image {
+    width: 50px; /* Set the width of the image */
+    height: 50px; /* Set the height of the image */
+    object-fit: cover; /* Ensure the image covers the dimensions */
+    margin-right: 10px; /* Space between the image and text */
+}
+
+.checkout-total {
+    display: flex;
+    align-items: center; /* Center the total vertically */
+    justify-content: flex-end; /* Align total to the right */
+    flex-direction: column;
+}
+.checkout-image {
+    width: 50px; /* Adjust size as needed */
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* Form Styling (Assuming there is a form container) */
+.checkout-form {
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack form fields vertically */
+    margin-top: 20px; /* Add spacing above the form */
+
+}
+
+/* Individual Form Field */
+.checkout-form input, .checkout-form select {
+    margin-bottom: 10px; /* Spacing between form fields */
+    padding: 10px; /* Add padding for input fields */
+    border: 1px solid #ccc; /* Add border to input fields */
+    border-radius: 5px; /* Rounded corners for input fields */
 }

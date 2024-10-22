@@ -6,69 +6,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Lesson Information</title>
+</head>
 
+<body>
     <!-- Page Heading -->
     <h1>After School Classes</h1>
 
     <div id="app">
-        <!-- Cart display -->
-        <div class="cart">
-            <h2>Cart</h2>
-            <p>Items in cart: {{ cart.length }}</p>
-            <button @click="showCheckout = true" v-if="cart.length > 0">Go to Checkout</button>
-        </div>
+        <!--Navigation Bar-->
+        <div class="navbar">
+            <!-- Cart Button (Toggles between showing cart and lessons) -->
+            <div class="cart-toggle">
+                <button @click="toggleCart" :disabled="cart.length === 0 && !showCheckout">
+                    {{ showCheckout ? 'Continue Shopping' : `Go to Checkout (${cart.length})` }}
+                </button>
+            </div>
 
-        <!--Sorting Options-->
-        <div class="sort-options">
-            <label for="sortBy">Sort By:</label>
-            <select v-model="sortBy" @change="sortLessons">
-                <option value="subject">Subject</option>
-                <option value="location">Location</option>
-                <option value="price">Price</option>
-                <option value="availability">Spaces</option>
-            </select>
-            <button @click="toggleSortOrder">{{ sortOrderLabel }}</button>
-        </div>
+            <!-- Cart display (shown when showCheckout is true) -->
+            <div v-if="showCheckout" class="checkout">
+                <h2>Checkout</h2>
+                <div class="checkout-content">
+                    <ul class="checkout-list">
+                        <li v-for="(item, index) in cart" :key="item.id" class="checkout-item">
+                            <img :src="item.imagePath" :alt="item.imageAlt" class="checkout-image">
+                            {{ item.subject }} - £{{ item.price }}
+                            <button @click="removeFromCart(item, index)">Remove</button>
+                        </li>
+                    </ul>
+                    <div class="checkout-total">
+                        <p>Total: £{{ cartTotal }}</p>
 
-        <!-- Product List (shown when not in checkout)-->
-        <div v-if="!showCheckout" class="lesson-list">
-            <!-- Loop through each lesson -->
-             <div v-for="lesson in lessons" :key="lesson.id" class="lesson-container"> <!--v-for used for the display of the lesson list-->
-            <!-- Lesson Container -->
-            <div class="lesson-container">
-                <!-- Image -->
-                <img :src="lesson.imagePath" :alt="lesson.imageAlt" class="lesson-image">
-                <!-- Subject -->
-                <div class="lesson-info">
-                    <strong>Subject:</strong> {{ lesson.subject }}
-                </div>
-                <!-- Location -->
-                <div class="lesson-info">
-                    <strong>Location:</strong> {{ lesson.location }}
-                </div>
-                <!-- Price -->
-                <div class="lesson-info lesson-price">
-                    <strong>Price:</strong> £{{ lesson.price }}
-                </div>
-                <!-- Add to Cart Button-->
-                <button @click="addToCart(lesson)" :disabled="lesson.availability === 0" class="addToCartBtn"> Add To
-                    Cart</button>
-                <!-- Availability-->
-                <div class="lesson-availabilty">
-                    <strong>Available:</strong> {{ lesson.availability }}
+                        <!--Input fields for Name and Phone-->
+                        <div>
+                            <label for="firstName">First Name:</label>
+                            <input type="text" v-model="customerFirstName" @input="validateFields" placeholder="Enter your First Name" />
+                        </div>
+                        <div>
+                            <label for="lastName">Last Name:</label>
+                            <input type="text" v-model="customerLastName" @input="validateFields" placeholder="Enter your Last Name" />
+                        </div>
+                        <div>
+                            <label for="addressLineOne">Address Line One:</label>
+                            <input type="text" v-model="customerAddressLineOne" @input="validateFields" placeholder="Enter your First Line Of Address " />
+                        </div>
+                        <div>
+                            <label for="addressLineTwo">Address Line Two:</label>
+                            <input type="text" v-model="customerAddressLineTwo" @input="validateFields" placeholder="Enter your Second Line Of Address" />
+                        </div>
+                        <div>
+                            <label for="postcode">Postcode:</label>
+                            <input type="text" v-model="customerPostcode" @input="validateFields" placeholder="Enter your Postcode" />
+                        </div>
+                        <div>
+                            <label for="email">Email Address:</label>
+                            <input type="text" v-model="customerEmail" @input="validateFields" placeholder="Enter your Email Address" />
+                        </div>
+                        <div>
+                            <label for="phone">Phone Number:</label>
+                            <input type="text" v-model="customerPhone" @input="validateFields" placeholder="Enter your Phone Number" />
+                        </div>
+
+                        <!--Checkout Button-->
+                        <button @click="submitOrder" :disabled="!isFormValid">Confirm Details</button>
+
+                        <!--Confirmation Message-->
+                        <p v-if="orderSubmitted">{{ confirmationMessage }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <!-- Sorting Options -->
+            <div v-if="!showCheckout" class="sort-options">
+                <label for="sortBy">Sort By:</label>
+                <select v-model="sortBy" @change="sortLessons">
+                    <option value="subject">Subject</option>
+                    <option value="location">Location</option>
+                    <option value="price">Price</option>
+                    <option value="availability">Availability</option>
+                </select>
+                <button @click="toggleSortOrder">{{ sortOrderLabel }}</button>
+            </div>
         </div>
 
-        <!-- Checkout Area (Shown when in checkout)-->
-        <div v-if="showCheckout" class="checkout">
-            <h2>Checkout</h2>
-            <ul>
-                <li v-for="item in cart" :key="item.id">{{ item.subject }} - £{{ item.price }}</li>
-            </ul>
-            <p>Total: £{{ cartTotal }}</p>
-            <button @click="showCheckout = false">Continue Shopping</button>
+        <!-- Product List (shown when not in checkout) -->
+        <div v-if="!showCheckout" class="lesson-list">
+            <!-- Loop through each lesson -->
+            <div v-for="lesson in sortedLessons" :key="lesson.id" class="lesson-container">
+                <!-- Lesson Container -->
+                <div class="lesson-container">
+                    <!-- Image -->
+                    <img :src="lesson.imagePath" :alt="lesson.imageAlt" class="lesson-image">
+                    <!-- Subject -->
+                    <div class="lesson-info">
+                        <strong>Subject:</strong> {{ lesson.subject }}
+                    </div>
+                    <!-- Location -->
+                    <div class="lesson-info">
+                        <strong>Location:</strong> {{ lesson.location }}
+                    </div>
+                    <!-- Price -->
+                    <div class="lesson-info lesson-price">
+                        <strong>Price:</strong> £{{ lesson.price }}
+                    </div>
+                    <!-- Add to Cart Button -->
+                    <button @click="addToCart(lesson)" :disabled="lesson.availability === 0" class="addToCartBtn">
+                        Add To Cart
+                    </button>
+                    <!-- Availability -->
+                    <div class="lesson-availability">
+                        <strong>Available:</strong> {{ lesson.availability }}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -78,8 +127,8 @@
         new Vue({
             el: '#app',
             data: {
-                showCheckout: false,
-                cart: [],
+                showCheckout: false, // Determines whether to show the cart page or lessons page
+                cart: [], // Shopping cart
                 lessons: [
                     {
                         id: 1,
@@ -122,7 +171,7 @@
                         subject: 'History',
                         location: 'Balham',
                         price: 25,
-                        imagePath:'https://dualcreditathome.com/wp-content/uploads/2014/02/history.jpg',
+                        imagePath: 'https://dualcreditathome.com/wp-content/uploads/2014/02/history.jpg',
                         imageAlt: 'History lesson image',
                         availability: 5
                     },
@@ -131,7 +180,7 @@
                         subject: 'Religious Studies',
                         location: 'Catford',
                         price: 25,
-                        imagePath:'https://newseumed.org/sites/default/files/styles/200x200/public/2020-11/thumb-LP-C2C-methods-of-religious-studies.jpg?itok=lmL6jIiF',
+                        imagePath: 'https://newseumed.org/sites/default/files/styles/200x200/public/2020-11/thumb-LP-C2C-methods-of-religious-studies.jpg?itok=lmL6jIiF',
                         imageAlt: 'Religious Studies lesson image',
                         availability: 5
                     },
@@ -140,7 +189,7 @@
                         subject: 'Art',
                         location: 'Putney',
                         price: 20,
-                        imagePath:'https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-course-photos.s3.amazonaws.com/65/78ce0081ad11e681d7bb31b0a632ef/starry-night.jpg',
+                        imagePath: 'https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-course-photos.s3.amazonaws.com/65/78ce0081ad11e681d7bb31b0a632ef/starry-night.jpg',
                         imageAlt: 'Art lesson image',
                         availability: 5
                     },
@@ -172,38 +221,75 @@
                         availability: 5
                     }
                 ],
-                sortBy: 'subject', //Default sort attribute
-                sortOrder: 'asc', //Default sort order (ascending)
+                sortBy: 'subject', // Default sorting attribute
+                sortOrder: 'asc', // Default sort order
+                customerFirstName: '',
+                cutomerLastName: '',
+                customerAddressLineOne: '',
+                customerAddressLineTwo: '',
+                customerPostcode:'',
+                customerPhone: '',
+                customerEmail:'',
+                orderSubmitted: false,
+                confirmationMessage: '',
             },
             methods: {
+                toggleCart() {
+                    // Toggle between showing the cart and the lessons
+                    this.showCheckout = !this.showCheckout;
+                },
                 addToCart(lesson) {
                     if (lesson.availability > 0) {
-                        this.cart.push(lesson);
-                        lesson.availability--; //Reduce availability by 1
-                    
+                        this.cart.push(lesson); // Add lesson to the cart
+                        lesson.availability--; // Reduce availability by 1
+                    }
+                },
+                removeFromCart(item, index) {
+                    // Add back availability for the lesson
+                    let lesson = this.lessons.find(lesson => lesson.id === item.id);
+                    if (lesson) {
+                        lesson.availability++;
+                    }
+                    // Remove the lesson from the cart
+                    this.cart.splice(index, 1);
+                },
+                sortLessons() {
+                    // Sorting method when the sorting options change
+                    this.sortedLessons();
+                },
+                toggleSortOrder() {
+                    // Toggle sorting between ascending and descending
+                    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+                    this.sortLessons(); // Re-sort lessons after toggling order
+                },
+                validateFields() {
+                    // Trigger computed property reactivity
+                },
+                validateName() {
+                    return /^[a-zA-Z\s]+$/.test(this.customerName);
+                },
+                validatePhone() {
+                    return /^\d+$/.test(this.customerPhone);
+                },
+                submitOrder() {
+                    if (this.isFormValid) {
+                        this.orderSubmitted = true;
+                        this.confirmationMessage = `Congratulations ${this.customerFirstName} ${this.customerLastName}, your order has been submitted successfully! A text message of confirmation will be sent to your number: ${this.customerPhone}.`;
+                        // Reset fields
+                        this.customerFirstName = '';
+                        this.customerLastName = '';
+                        this.customerPhone = '';
+                        this.customerEmail= '';
+                        this.customerAddressLineOne = '';
+                        this.customerAddressLineTwo = '';
+                        this.customerPostcode = '';
+                        this.cart = []; //Clear cart after submission of form
+                    }
                 }
             },
-            sortLessons() {
-                //Method will be triggered when the sorting option is changed
-                this.lessons.sort((a,b) => {
-                    let attributeA = a[this.sortBy];
-                    let attributeB = b[this.sortBy];
-                    if (this.sortOrder === 'asc') {
-                        return attributeA > attributeB ? 1 : attributeA < attributeB ? -1 : 0;
-                    } else {
-                        return attributeA < attributeB ? 1 : attributeA > attributeB ? -1 : 0;
-                    }
-                });
-            },
-            toggleSortOrder() {
-                //Toggle between ascending and descending
-                this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
-                this.sortLessons(); //Re-sort after changing the order
-            }
-        },
             computed: {
                 sortedLessons() {
-                    // Returns the sorted lessons array
+                    // Returns a sorted copy of the lessons array
                     return [...this.lessons].sort((a, b) => {
                         let attributeA = a[this.sortBy];
                         let attributeB = b[this.sortBy];
@@ -215,24 +301,21 @@
                     });
                 },
                 cartTotal() {
+                    // Computes the total cost of items in the cart
                     return this.cart.reduce((total, item) => total + item.price, 0);
                 },
                 sortOrderLabel() {
+                    // Label for the sort order toggle button
                     return this.sortOrder === 'asc' ? 'Ascending' : 'Descending';
-                }
-            },
-            watch: {
-                //Watch for changes in sortBy or sortOrder and trigger sorting
-                sortBy() {
-                    this.sortLessons();
                 },
-                sortOrder(){
-                    this.sortLessons();
+                isFormValid() {
+                    // Check if both name and phone number are valid
+                    return this.validateName() && this.validatePhone();
                 }
             }
         });
     </script>
-
-    </body>
+</body>
 
 </html>
+
