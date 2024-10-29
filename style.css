@@ -1,0 +1,397 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    /*background-image: url('https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjk0Ny1udW5ueS0yOS5qcGc.jpg');*/ 
+    background-size: cover; 
+    background-attachment: fixed; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+}
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(125, 165, 214);
+    padding: 10px;
+    max-width: 100%;
+}
+
+.navbar .search-bar {
+    display: flex;
+    align-items: center;
+}
+
+.search-bar {
+    flex-grow: 1;
+    margin-right: 20px;
+    position: relative;
+    align-items: center;
+    display: flex;
+    flex-grow: 1;
+
+}
+
+.search-bar i {
+    position: absolute;
+    left: 10px;
+    font-size: 20px;
+    color: #999;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 10px 10px 35px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.cart-toggle button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.cart-toggle button:disabled {
+    background-color: #888;
+    cursor: not-allowed;
+}
+
+.sort-options {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    float: right;
+    
+}
+
+.sort-options label {
+    color: white;
+    margin-left: 10px;
+}
+
+.sort-options select,.sort-options button {
+    padding: 5px;
+    margin-left: 10px;
+}
+
+.sort-options button {
+    background-color: white;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+ /* Style the lesson container */
+.lesson-container {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+/* Style the lesson details */
+.lesson-info {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+/* Style the lesson image */
+.lesson-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    
+}
+
+/* Style the price for better emphasis */
+.lesson-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+/* Availability info styling */
+.lesson-availability {
+    margin-top: 10px; /* Extra spacing for availability text */
+}
+
+/* Style for the page heading */
+h1 {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    margin-top: 20px;
+    color: #333;
+}
+
+/* General button styles for all buttons */
+button {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding around the text */
+    margin: 10px 5px; /* Space around the button */
+    border: none; /* Remove borders */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Larger font size */
+    transition: background-color 0.3s ease; /* Smooth background color change */
+}
+
+/* Hover effect for all buttons */
+button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Disabled button style */
+button:disabled {
+    background-color: #ccc; /* Grey background when disabled */
+    cursor: not-allowed; /* Not-allowed cursor */
+}
+
+/* Specific button style for 'Go to Checkout' and 'Continue Shopping' */
+.cart-toggle button {
+    background-color: #f39c12;
+    padding: 10px 10px 10px 35px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.cart-toggle button:hover {
+    background-color: #e67e22; /* Darker orange on hover */
+}
+
+.cart-toggle {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.cart-toggle i {
+    margin-right: 10px;
+    font-size: 20px;
+    color: black;
+    position: absolute;
+    left: 10px;
+    font-size: 20px;
+    color: #999;
+
+}
+
+/* Specific button style for 'Ascending/Descending' */
+.sort-options button {
+    background-color: #ea3553; /* Red background */
+}
+
+.sort-options button:hover {
+    background-color: #b02d2d; /* Darker red on hover */
+}
+
+/* Add to Cart Button */
+.addToCartBtn {
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.addToCartBtn:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+.addToCartBtn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Go to Checkout Button */
+.cart button {
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+}
+
+.cart button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Position the cart at the top-right corner */
+.cart button{
+    position: fixed; /* Keeps the cart in place even when scrolling */
+    top: 10px;       /* Distance from the top */
+    right: 10px;     /* Distance from the right */
+    padding: 10px;
+    /*border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional shadow for better visibility */
+}
+
+.cart button h2 {
+    margin-top: 0; /* Align heading properly inside the cart */
+}
+
+/* Continue Shopping Button in checkout */
+.checkout button {
+    background-color: #ffc107;
+    color: black;
+    border-radius: 5px;
+}
+
+.checkout button:hover {
+    background-color: #e0a800;
+    transform: scale(1.05);
+}
+
+/*Make the lesson-container items display side by side */
+ .lesson-list {
+    display:flex; /* Enables flexbox */
+    flex-wrap: wrap; /* Allows the items to wrap to the next line if they don't fit in one row */
+    gap: 20px; /* Space between items */
+    justify-content: space-between; /* Adds space between items, or use center, start, etc. */
+} 
+
+/* Lesson container styling */
+.lesson-container {
+    flex: 1 1 calc(33.33% - 20px); /* Make each item take up 1/3 of the row (adjust as needed) */
+    box-sizing: border-box; /* Include padding and border in the element’s width and height */
+    padding: 10px;
+} 
+
+/* Image styling */
+.lesson-image {
+    width: 100px; /* Make sure the image fits the container */
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+} */
+
+.star {
+    font-size: 16px;
+    margin-left: 2px;
+}
+.unfilled {
+    color: #ccc; /* Light gray for unfilled stars */
+}
+
+.checkout {
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack items vertically */
+    margin: 20px;
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.checkout-content {
+    display: flex; /* Use flexbox for the content layout */
+    flex-direction: column;
+    min-height: 50vh;
+    margin-top: 20px;
+    padding: 20px;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+/* Styling for larger input fields */
+.checkout-content input[type="text"],
+.checkout-content input[type="number"] {
+    width: 100%;
+    padding: 12px 20px; /* Increased padding for larger input fields */
+    margin: 8px 0;
+    font-size: 1.1em; /* Increase font size for readability */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.checkout-content label {
+    font-weight: bold;
+    font-size: 1em;
+    margin-top: 15px;
+    display: block;
+}
+
+/* Checkout button with larger styling */
+.checkout-content button {
+    font-size: 1.2em;
+    padding: 12px 24px;
+    margin-top: 20px;
+    cursor: pointer;
+    background-color:#ffc107;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.checkout-content button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.checkout-list {
+    flex: 1; /* Allow the list to take available space */
+    margin-right: 20px; /* Space between the list and total */
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.checkout-item {
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Vertically center the items */
+    margin-bottom: 50px; /* Spacing between items */
+    width: 100%;
+    justify-content: space-between;
+}
+
+.checkout-image {
+    width: 200px; /* Set the width of the image */
+    height: auto; /* Set the height of the image */
+    object-fit: cover; /* Ensure the image covers the dimensions */
+    margin-right: 10px; /* Space between the image and text */
+}
+
+.checkout-total {
+    display: flex;
+    align-items: center; /* Center the total vertically */
+    justify-content: flex-end; /* Align total to the right */
+    flex-direction: column;
+}
+
+/* Form Styling (Assuming there is a form container) */
+.checkout-form {
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack form fields vertically */
+    margin-top: 20px; /* Add spacing above the form */
+
+}
+
+/* Individual Form Field */
+.checkout-form input, .checkout-form select {
+    margin-bottom: 10px; /* Spacing between form fields */
+    padding: 10px; /* Add padding for input fields */
+    border: 1px solid #ccc; /* Add border to input fields */
+    border-radius: 5px; /* Rounded corners for input fields */
+}
+
+.quantity-controls {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.quantity-controls button {
+    padding: 5px 10px;
+    margin: 0 5px;
+}
+
+.quantity-controls span {
+    min-width: 20px;
+    text-align: center;
+}
